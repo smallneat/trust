@@ -1,9 +1,9 @@
 <?php namespace Smallneat\Trust;
 
 use Illuminate\Support\ServiceProvider;
-use Smallneat\Trust\MigrationCommand;
 
 class TrustServiceProvider extends ServiceProvider {
+
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -12,20 +12,35 @@ class TrustServiceProvider extends ServiceProvider {
 	 */
 	protected $defer = false;
 
-	/**
+
+
+
+    /**
+     * Called to boot the package
+     */
+    public function boot()
+    {
+        $this->package('smallneat/trust');
+    }
+
+
+
+    /**
 	 * Register the service provider.
 	 *
 	 * @return void
 	 */
 	public function register()
 	{
-        $this->app['command.entrust.migration'] = $this->app->share(function($app)
+        $this->app['command.trust.migration'] = $this->app->share(function($app)
         {
             return new MigrationCommand($app);
         });
 
-        $this->commands('command.entrust.migration');
+        $this->commands('command.trust.migration');
 	}
+
+
 
 	/**
 	 * Get the services provided by the provider.
