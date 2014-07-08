@@ -7,6 +7,9 @@
  * I've solved this by placing the tests here in the package, but updating
  * the phpunit.xml in the workbench project so that is includes this test directory as well as the default.
  *
+ * The workbench project, with all the models, migrations and db seeds needed by these tests can be found at
+ * https://github.com/smallneat/trust-test
+ *
  */
 class UserRoleTest extends TestCase {
 
