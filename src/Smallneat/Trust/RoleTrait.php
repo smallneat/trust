@@ -2,6 +2,8 @@
 
 namespace Smallneat\Trust;
 
+use Illuminate\Support\Facades\Config;
+
 trait RoleTrait
 {
 
@@ -10,7 +12,8 @@ trait RoleTrait
      */
     public function users()
     {
-        return $this->belongsToMany('User', 'user_role');
+        // Map the Role model to the User model using the users table and the user_role table
+        return $this->belongsToMany(Config::get('trust::models.user'), Config::get('trust::tables.user_role'));
     }
 
     /**
@@ -19,7 +22,8 @@ trait RoleTrait
      */
     public function perms()
     {
-        return $this->belongsToMany('Permission', 'permission_role');
+        // Map the Role model to the Permission model using the permissions table and the permission_role table.
+        return $this->belongsToMany(Config::get('trust::models.permission'), Config::get('trust::tables.permission_role'));
     }
 
 
