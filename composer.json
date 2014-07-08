@@ -1,6 +1,8 @@
 {
     "name": "smallneat/trust",
     "description": "Roles and Permissions for Laravel4",
+    "license": "MIT",
+    "keywords": ["auth", "laravel", "roles"],
     "authors": [
         {
             "name": "Rik Heywood",
