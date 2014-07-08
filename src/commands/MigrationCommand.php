@@ -75,7 +75,7 @@ class MigrationCommand extends Command {
     protected function createMigration()
     {
         $src =  __DIR__.'/../migrations/create_tables.php';
-        $migration_file = $this->laravel->path."/database/migrations/".date('Y_m_d_His')."_trust_setup_tables.php";
+        $migration_file = $this->laravel->path."/database/migrations/".date('Y_m_d_His')."_setup_roles_permissions_tables.php";
 
         // Check that the source file exists
         if (!file_exists($src)) {

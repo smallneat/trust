@@ -2,8 +2,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Config;
 
-class TrustSetupTables extends Migration {
+class SetupRolesPermissionsTables extends Migration {
 
     /**
      * Run the migrations.
@@ -13,7 +14,7 @@ class TrustSetupTables extends Migration {
     public function up()
     {
         // Creates the roles table
-        Schema::create('roles', function($table)
+        Schema::create(Config::get('trust::tables.roles'), function($table)
         {
             $table->increments('id')->unsigned();
             $table->string('name')->unique();
@@ -22,7 +23,7 @@ class TrustSetupTables extends Migration {
 
         // Creates the user_roles (Many-to-Many relation) table
         // This is different from teh alphabetical convention, but makes a lot more sense.
-        Schema::create('user_role', function($table)
+        Schema::create(Config::get('trust::tables.user_role'), function($table)
         {
             $table->increments('id')->unsigned();
             $table->integer('user_id')->unsigned();
@@ -33,7 +34,7 @@ class TrustSetupTables extends Migration {
         });
 
         // Creates the permissions table
-        Schema::create('permissions', function($table)
+        Schema::create(Config::get('trust::tables.permissions'), function($table)
         {
             $table->increments('id')->unsigned();
             $table->string('name');
@@ -42,7 +43,7 @@ class TrustSetupTables extends Migration {
         });
 
         // Creates the permission_role (Many-to-Many relation) table
-        Schema::create('permission_role', function($table)
+        Schema::create(Config::get('trust::tables.permission_role'), function($table)
         {
             $table->increments('id')->unsigned();
             $table->integer('role_id')->unsigned();
@@ -60,20 +61,25 @@ class TrustSetupTables extends Migration {
      */
     public function down()
     {
-        Schema::table('user_role', function(Blueprint $table) {
-            $table->dropForeign('user_role_user_id_foreign');
-            $table->dropForeign('user_role_role_id_foreign');
+        // Remove the foreign keys for the user_role table
+        $userRoleTable = Config::get('trust::tables.user_role');
+        Schema::table($userRoleTable, function(Blueprint $table) use ($userRoleTable) {
+            $table->dropForeign($userRoleTable.'_user_id_foreign');
+            $table->dropForeign($userRoleTable.'_role_id_foreign');
         });
 
-        Schema::table('permission_role', function(Blueprint $table) {
-            $table->dropForeign('permission_role_permission_id_foreign');
-            $table->dropForeign('permission_role_role_id_foreign');
+        // Remove the foreign keys for the permission_role table
+        $permissionRoleTable = Config::get('trust::tables.permission_role');
+        Schema::table('permission_role', function(Blueprint $table) use ($permissionRoleTable) {
+            $table->dropForeign($permissionRoleTable.'_permission_id_foreign');
+            $table->dropForeign($permissionRoleTable.'_role_id_foreign');
         });
 
-        Schema::drop('permission_role');
-        Schema::drop('permissions');
-        Schema::drop('user_role');
-        Schema::drop('roles');
+        // Drop all the tables
+        Schema::drop($permissionRoleTable);
+        Schema::drop(Config::get('trust::tables.permissions'));
+        Schema::drop($userRoleTable);
+        Schema::drop(Config::get('trust::tables.roles'));
     }
 
 }
