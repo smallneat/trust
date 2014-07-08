@@ -30,40 +30,6 @@ trait RoleTrait
 
 
     /**
-     * Attach permission to current role
-     * @param $permission - a Permission object or the id of a Permission
-     */
-    public function attachPermission( $permission )
-    {
-        if (is_object($permission))
-            $permission = $permission->getKey();
-
-        if (is_array($permission))
-            $permission = $permission['id'];
-
-        $this->perms()->attach( $permission );
-    }
-
-
-
-    /**
-     * Detach permission form current role
-     * @param $permission - a Permission object or the id of a Permission
-     */
-    public function detachPermission( $permission )
-    {
-        if (is_object($permission))
-            $permission = $permission->getKey();
-
-        if (is_array($permission))
-            $permission = $permission['id'];
-
-        $this->perms()->detach( $permission );
-    }
-
-
-
-    /**
      * Attach multiple permissions to current role
      *
      * @param $permissions - an array of permission objects or ids
@@ -71,9 +37,23 @@ trait RoleTrait
      */
     public function attachPermissions($permissions)
     {
+        // Make sure we have an array
+        if (!is_array($permissions)) {
+            $permissions = [ $permissions ];
+        }
+
+        // Add them all
         foreach ($permissions as $permission)
         {
-            $this->attachPermission($permission);
+            if (is_object($permission)) {
+                $permission = $permission->getKey();
+            }
+
+            if (is_array($permission)) {
+                $permission = $permission['id'];
+            }
+
+            $this->perms()->attach( $permission );
         }
     }
 
@@ -87,9 +67,23 @@ trait RoleTrait
      */
     public function detachPermissions($permissions)
     {
+        // Make sure we have an array
+        if (!is_array($permissions)) {
+            $permissions = [ $permissions ];
+        }
+
+        // detach them all
         foreach ($permissions as $permission)
         {
-            $this->detachPermission($permission);
+            if (is_object($permission)) {
+                $permission = $permission->getKey();
+            }
+
+            if (is_array($permission)) {
+                $permission = $permission['id'];
+            }
+
+            $this->perms()->detach( $permission );
         }
     }
 

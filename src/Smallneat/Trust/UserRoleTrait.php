@@ -61,46 +61,6 @@ trait UserRoleTrait
 
 
 
-    /**
-     * Alias to eloquent many-to-many relation's
-     * attach() method
-     *
-     * @param mixed $role
-     * @return void
-     */
-    public function attachRole( $role )
-    {
-        if (is_object($role))
-            $role = $role->getKey();
-
-        if (is_array($role))
-            $role = $role['id'];
-
-        $this->roles()->attach( $role );
-    }
-
-
-
-
-    /**
-     * Alias to eloquent many-to-many relation's
-     * detach() method
-     *
-     * @param mixed $role
-     * @return void
-     */
-    public function detachRole( $role )
-    {
-        if (is_object($role))
-            $role = $role->getKey();
-
-        if (is_array($role))
-            $role = $role['id'];
-
-        $this->roles()->detach( $role );
-    }
-
-
 
     /**
      * Attach multiple roles to a user
@@ -110,9 +70,23 @@ trait UserRoleTrait
      */
     public function attachRoles($roles)
     {
+        // Make sure we have an array
+        if (!is_array($roles)) {
+            $roles = [ $roles ];
+        }
+
+        // Attach each one
         foreach ($roles as $role)
         {
-            $this->attachRole($role);
+            if (is_object($role)) {
+                $role = $role->getKey();
+            }
+
+            if (is_array($role)) {
+                $role = $role['id'];
+            }
+
+            $this->roles()->attach( $role );
         }
     }
 
@@ -126,9 +100,23 @@ trait UserRoleTrait
      */
     public function detachRoles($roles)
     {
+        // Make sure we have an array
+        if (!is_array($roles)) {
+            $roles = [ $roles ];
+        }
+
+        // Detach each one
         foreach ($roles as $role)
         {
-            $this->detachRole($role);
+            if (is_object($role)) {
+                $role = $role->getKey();
+            }
+
+            if (is_array($role)) {
+                $role = $role['id'];
+            }
+
+            $this->roles()->detach( $role );
         }
     }
 }

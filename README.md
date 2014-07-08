@@ -169,20 +169,22 @@ $admin = Role::create(['name' => 'Admin']);
 $editor = Role::create(['name' => 'Editor']);
 
 // Attach some permissions to each of the roles
-// You can either pass in Role objects, or Role id's
+// You can either pass in a Role object, and id, or an array of Roles / id's
 $admin->attachPermissions([$manageUsers, $deletePosts]);
 $editor->attachPermissions([$createPosts, $editPosts, $deletePosts]);
 
 // You can access the permissions that a role has (using Eloquent) like so...
 $admin->perms()
+
+// Remove them with detachPermissions()
 ```
 
 Finally, we can give a user some of these roles and query them
 
 ```php
-// Give a user a role (using a Role model or id)
+// Give a user a role (using a Role model or id or an array of roles / id's)
 $user = Auth::user();
-$user->attachRole($editor);
+$user->attachRoles($editor);
 
 // Query the user
 $user->hasRole('Editor');       // true
@@ -192,6 +194,8 @@ $user->can('ManageUsers');      // false
 
 // Access all the roles the user has
 $user->roles();
+
+// remove them with detachRoles()
 ```
 
 ## License
