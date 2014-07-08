@@ -1,0 +1,23 @@
+{
+    "name": "smallneat/trust",
+    "description": "Roles and Permissions for Laravel4",
+    "authors": [
+        {
+            "name": "Rik Heywood",
+            "email": "hello@smallneatbox.co.uk"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/commands"
+        ],
+        "psr-0": {
+            "Smallneat\\Trust": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
