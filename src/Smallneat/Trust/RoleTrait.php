@@ -2,6 +2,7 @@
 
 namespace Smallneat\Trust;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Config;
 
 trait RoleTrait
@@ -38,7 +39,7 @@ trait RoleTrait
     public function attachPermissions($permissions)
     {
         // Make sure we have an array
-        if (!is_array($permissions)) {
+        if (!($permissions instanceof Collection) && !is_array($permissions)) {
             $permissions = [ $permissions ];
         }
 
@@ -68,7 +69,7 @@ trait RoleTrait
     public function detachPermissions($permissions)
     {
         // Make sure we have an array
-        if (!is_array($permissions)) {
+        if (!($permissions instanceof Collection) && !is_array($permissions)) {
             $permissions = [ $permissions ];
         }
 
