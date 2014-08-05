@@ -37,6 +37,9 @@ class UserRoleTest extends TestCase {
         $this->assertTrue($user->hasRole('Editor'));
         $this->assertTrue($user->hasRole('Blogger'));
 
+        $adminRole = Role::where('name', '=', 'Admin')->first();
+        $this->assertTrue($user->hasRole($adminRole));
+
         $this->assertFalse($user->hasRole('Fisherman'));
     }
 
