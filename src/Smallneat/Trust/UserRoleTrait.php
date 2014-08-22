@@ -19,22 +19,26 @@ trait UserRoleTrait
 
 
     /**
-     * Checks if the user has a Role by its name
+     * Checks if the user has a Role by its name or Model
      *
-     * @param string $name Role name.
+     * @param string|Role $name Role name.
      * @return boolean
      */
     public function hasRole( $name )
     {
+        // check if we've been passed a Role object
+        if (is_a($name, 'Role')) {
+            $name = $name->name;
+        }
+
         foreach ($this->roles as $role) {
             if ($role->name == $name) {
                 return true;
             }
         }
-
+     
         return false;
     }
-
 
 
 
