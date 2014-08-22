@@ -57,6 +57,8 @@ You may now run the migration with the artisan migrate command:
 
 After the migration, four new tables will be present, as described above.
 
+**NOTE:** This does not create the `users` table for you. If you don't already have a users table you will need to add a migration to create one. We assume this table is called `users` and has a field `user_id`.
+
 
 ### Using Trust in your models
 
