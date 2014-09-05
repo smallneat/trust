@@ -75,7 +75,17 @@ class MigrationCommand extends Command {
     protected function createMigration()
     {
         $src =  __DIR__.'/../migrations/create_tables.php';
-        $migration_file = $this->laravel->path."/database/migrations/".date('Y_m_d_His')."_setup_roles_permissions_tables.php";
+
+        // Figure out the path to the database folder. In 4.2 this is in app/database/migrations.
+        $databasePath = $this->laravel->path."/database/migrations/";
+
+        // In 4.3 we can configure it...
+        if ($this->laravel->bound('path.database')) {
+            $databasePath = $this->laravel->make('path.database') . '/migrations/';
+        }
+
+        // build a filename for the migration
+        $migration_file = $databasePath . date('Y_m_d_His') . "_setup_roles_permissions_tables.php";
 
         // Check that the source file exists
         if (!file_exists($src)) {
