@@ -16,7 +16,7 @@ trait RoleTrait
     public function users()
     {
         // Map the Role model to the User model using the users table and the user_role table
-        return $this->belongsToMany(config('trust::models.user'), config('trust::tables.user_role'));
+        return $this->belongsToMany(config('trust.models.user'), config('trust.tables.user_role'));
     }
 
     /**
@@ -26,7 +26,7 @@ trait RoleTrait
     public function perms()
     {
         // Map the Role model to the Permission model using the permissions table and the permission_role table.
-        return $this->belongsToMany(config('trust::models.permission'), config('trust::tables.permission_role'));
+        return $this->belongsToMany(config('trust.models.permission'), config('trust.tables.permission_role'));
     }
 
 

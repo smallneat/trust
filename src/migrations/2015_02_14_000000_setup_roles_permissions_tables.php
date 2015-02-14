@@ -15,7 +15,7 @@ class SetupRolesPermissionsTables extends Migration
   {
     // Creates the roles table
     Schema::create(
-      config('trust::tables.roles'),
+      config('trust.tables.roles'),
       function ($table)
       {
         $table->increments('id')->unsigned();
@@ -27,7 +27,7 @@ class SetupRolesPermissionsTables extends Migration
     // Creates the user_roles (Many-to-Many relation) table
     // This is different from the alphabetical convention (role_user), but makes a lot more sense.
     Schema::create(
-      config('trust::tables.user_role'),
+      config('trust.tables.user_role'),
       function ($table)
       {
         $table->increments('id')->unsigned();
@@ -41,7 +41,7 @@ class SetupRolesPermissionsTables extends Migration
 
     // Creates the permissions table
     Schema::create(
-      config('trust::tables.permissions'),
+      config('trust.tables.permissions'),
       function ($table)
       {
         $table->increments('id')->unsigned();
@@ -53,7 +53,7 @@ class SetupRolesPermissionsTables extends Migration
 
     // Creates the permission_role (Many-to-Many relation) table
     Schema::create(
-      config('trust::tables.permission_role'),
+      config('trust.tables.permission_role'),
       function ($table)
       {
         $table->increments('id')->unsigned();
@@ -74,7 +74,7 @@ class SetupRolesPermissionsTables extends Migration
   public function down()
   {
     // Remove the foreign keys for the user_role table
-    $userRoleTable = config('trust::tables.user_role');
+    $userRoleTable = config('trust.tables.user_role');
     Schema::table(
       $userRoleTable,
       function (Blueprint $table) use ($userRoleTable)
@@ -85,7 +85,7 @@ class SetupRolesPermissionsTables extends Migration
     );
 
     // Remove the foreign keys for the permission_role table
-    $permissionRoleTable = config('trust::tables.permission_role');
+    $permissionRoleTable = config('trust.tables.permission_role');
     Schema::table(
       'permission_role',
       function (Blueprint $table) use ($permissionRoleTable)
@@ -97,8 +97,8 @@ class SetupRolesPermissionsTables extends Migration
 
     // Drop all the tables
     Schema::drop($permissionRoleTable);
-    Schema::drop(config('trust::tables.permissions'));
+    Schema::drop(config('trust.tables.permissions'));
     Schema::drop($userRoleTable);
-    Schema::drop(config('trust::tables.roles'));
+    Schema::drop(config('trust.tables.roles'));
   }
 }
