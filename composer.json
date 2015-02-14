@@ -1,23 +1,30 @@
 {
-    "name": "smallneat/trust",
-    "description": "Roles and Permissions for Laravel4",
-    "license": "MIT",
-    "keywords": ["auth", "laravel", "roles"],
-    "authors": [
-        {
-            "name": "Rik Heywood",
-            "email": "hello@smallneatbox.co.uk"
-        }
-    ],
-    "require": {
-        "php": ">=5.4.0"
+  "name": "smallneat/trust",
+  "description": "Roles and Permissions for Laravel5",
+  "version": "3.0.1",
+  "license": "MIT",
+  "keywords": [
+    "auth",
+    "laravel",
+    "roles"
+  ],
+  "authors": [
+    {
+      "name": "Rik Heywood",
+      "email": "hello@smallneatbox.co.uk"
     },
-    "autoload": {
-        "classmap": [
-            "src/commands"
-        ],
-        "psr-0": {
-            "Smallneat\\Trust": "src/"
-        }
+    {
+      "name": "Alex House",
+      "email": "house.alexander@gmail.com"
     }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "illuminate/support": "~5.0"
+  },
+  "autoload": {
+    "psr-0": {
+      "Smallneat\\Trust": "src/"
+    }
+  }
 }
