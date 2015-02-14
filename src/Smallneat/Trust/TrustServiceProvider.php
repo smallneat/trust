@@ -2,54 +2,49 @@
 
 use Illuminate\Support\ServiceProvider;
 
-class TrustServiceProvider extends ServiceProvider {
+/**
+ * Class TrustServiceProvider
+ *
+ * @package Smallneat\Trust
+ */
+class TrustServiceProvider extends ServiceProvider
+{
+  /**
+   * Indicates if loading of the provider is deferred.
+   *
+   * @var bool
+   */
+  protected $defer = false;
 
+  /**
+   * Called to boot the package
+   */
+  public function boot()
+  {
+    $this->publishes(
+      [
+        __DIR__ . '/../../migrations/2015_02_14_000000_setup_roles_permissions_tables.php' => base_path('/database/migrations/2015_02_14_000000_setup_roles_permissions_tables.php'),
+      ],
+      'migrations'
+    );
+    $this->publishes(
+      [
+        __DIR__ . '/../../config/trust.php' => config_path('trust.php')
+      ],
+      'config'
+    );
+  }
 
-	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var bool
-	 */
-	protected $defer = false;
-
-
-
-
-    /**
-     * Called to boot the package
-     */
-    public function boot()
-    {
-        $this->package('smallneat/trust');
-    }
-
-
-
-    /**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-        $this->app['command.trust.migration'] = $this->app->share(function($app)
-        {
-            return new MigrationCommand($app);
-        });
-
-        $this->commands('command.trust.migration');
-	}
-
-
-
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
-		return array();
-	}
-
+  /**
+   * Register the service provider.
+   *
+   * @return void
+   */
+  public function register()
+  {
+    $this->mergeConfigFrom(
+      __DIR__ . '/../../config/trust.php',
+      'trust'
+    );
+  }
 }
