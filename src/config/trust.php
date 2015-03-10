@@ -13,9 +13,9 @@ return [
   */
 
   'models' => [
-    'user' => 'App\Models\User',
-    'role' => 'App\Models\Role',
-    'permission' => 'App\Models\Permission',
+    'user' => 'App\User',
+    'role' => 'App\Role',
+    'permission' => 'App\Permission',
   ],
 
   /*
