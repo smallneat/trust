@@ -6,7 +6,6 @@ User roles and permissions for Laravel 5 via traits
 Based on simplified ideas from https://github.com/Zizaco/entrust
 
 
-
 ### Required setup
 
 In the `require` key of `composer.json` file add the following
@@ -34,30 +33,27 @@ In your `config/app.php` add `'Smallneat\Trust\TrustServiceProvider'` to the end
 
 Trust creates a number of tables and makes assumptions about the names of your models. You can configure all these
 settings using Laravel's normal config. First you'll need to publish the config from this package into your app config
-(you only need to bother with this the default names clash with existing tables in your application)
+(you only need to bother with this if the default names clash with existing tables in your application)
 
-    $ php artisan config:publish smallneat/trust
+    $ php artisan vendor:publish --provider="Smallneat\Trust\TrustServiceProvider"
 
 The default settings assume your models are called `User`, `Role` and `Permission`, and that the tables used to track these
-are called `users`, `roles`, `permissions`. Trust also uses 2 pivot tables to provide the many to many association between
-users, roles and permissions, which are called `user_role` and `role_permission`.
+are called `users`, `roles` and `permissions` respectively. Trust also uses 2 pivot tables to provide the many to many
+association between users, roles and permissions, which are called `user_role` and `role_permission`.
 
-Once you've step up your config (or left it to the defaults), it's time for the next step.
+Once you've set up your config (or left it to the defaults), it's time for the next step.
 
 ### Creating a DB migration
 
-Now we need to create a Database migration using the following artisan command
-
-    $ php artisan trust:migration
-
-It will generate the `<timestamp>_setup_roles_permissions_tables.php` migration in your `app/database/migrations` folder.
-You may now run the migration with the artisan migrate command:
+As part of the `vendor:publish` command above, the DB migration will have been created under the `/database/migrations`
+folder. You can modify this if you wish, adding in your own columns as appropriate. When you are ready, simply run:
 
     $ php artisan migrate
 
-After the migration, four new tables will be present, as described above.
+After the migration, four new tables will be present as described above.
 
-**NOTE:** This does not create the `users` table for you. If you don't already have a users table you will need to add a migration to create one. We assume this table is called `users` and has a field `user_id`.
+**NOTE:** This does not create the `users` table for you. If you don't already have a users table you will need to add
+a migration to create one. We assume this table is called `users` and has a field `user_id`.
 
 
 ### Using Trust in your models
@@ -65,20 +61,21 @@ After the migration, four new tables will be present, as described above.
 Here we assume you already have a user model (like the one Laravel creates for you when you build a new Laravel app),
 and that it has a matching table in the database (normally called `users`).
 
-Add the `UserRoleTrait` trait to the User model class (normally in `app/models/User.php`), like so...
+Add the `UserRoleTrait` trait to the User model class (normally in `app/User.php`), like so...
 
 
 ```php
 <?php
 
 ...
-use Smallneat\Trust\UserRoleTrait;
+use Smallneat\Trust\Traits\UserRoleTrait;
 
-class User extends Eloquent implements UserInterface, RemindableInterface {
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
-	use UserTrait, RemindableTrait, UserRoleTrait;
+  use Authenticatable, CanResetPassword;
+  use UserRoleTrait;
 
-    ...
+  ...
 
 }
 ```
@@ -88,18 +85,18 @@ Next, Create a `Role` model that looks a little like this...
 ```php
 <?php
 
-use Smallneat\Trust\RoleTrait;
+use Smallneat\Trust\Traits\RoleTrait;
 
-class Role extends \Eloquent {
+class Role extends Model {
 
-    use RoleTrait;
+  use RoleTrait;
 
-	protected $fillable = [];
+  protected $fillable = [];
 }
 ```
 
 The Role model has a `name` attribute, which is the name of the role (eg, 'Admin', 'Editor', 'Manager', 'User').
-You can also find the users and permissions linked to the role using `roles()` and `permissions()`.
+You can also find the users and permissions linked to the role using the `roles()` and `permissions()` methods.
 
 
 Next, create a `Permission` model like this...
@@ -108,11 +105,11 @@ Next, create a `Permission` model like this...
 ```php
 <?php
 
-use Smallneat\Trust\PermissionTrait;
+use Smallneat\Trust\Traits\PermissionTrait;
 
-class Permission extends \Eloquent {
+class Permission extends Model {
 
-    use PermissionTrait;
+  use PermissionTrait;
 
 	protected $fillable = [];
 }
@@ -120,7 +117,7 @@ class Permission extends \Eloquent {
 
 The Permission model has a `name` attribute, which is the name of the permission (for example, 'CreatePost', 'EditPost',
 'DeletePost'), as well as a `description` attribute that is used to hold a readable description of the permission
-(eg, for presenting in your admin area). The `roles()` function will give you access to all the roles with this permission.
+(eg, for presenting in your admin area). The `roles()` method will give you access to all the roles with this permission.
 
 Finally, Don't forget to dump composer autoload
 
