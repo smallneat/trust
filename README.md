@@ -1,7 +1,7 @@
 Trust Roles and Permissions
 ===========================
 
-User roles and permissions for Laravel 4 via traits
+User roles and permissions for Laravel 5 via traits
 
 Based on simplified ideas from https://github.com/Zizaco/entrust
 
@@ -11,7 +11,7 @@ Based on simplified ideas from https://github.com/Zizaco/entrust
 
 In the `require` key of `composer.json` file add the following
 
-    "smallneat/trust": "1.*"
+    "smallneat/trust": "3.*"
 
 Run the Composer update command
 
