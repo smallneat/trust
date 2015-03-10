@@ -23,7 +23,12 @@ class TrustServiceProvider extends ServiceProvider
   {
     $this->publishes(
       [
-        __DIR__ . '/../../migrations/2015_02_14_000000_setup_roles_permissions_tables.php' => base_path('/database/migrations/2015_02_14_000000_setup_roles_permissions_tables.php'),
+        __DIR__ . '/../../migrations/2015_02_14_000000_setup_roles_permissions_tables.php' => base_path(
+          sprintf(
+            '/database/migrations/%s_setup_roles_permissions_tables.php',
+            date('Y_m_j_His')
+          )
+        ),
       ],
       'migrations'
     );
