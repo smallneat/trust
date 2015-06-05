@@ -1,10 +1,12 @@
-<?php
-
-namespace Smallneat\Trust;
+<?php namespace Smallneat\Trust\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Config;
 
+/**
+ * Class UserRoleTrait
+ *
+ * @package Smallneat\Trust\Traits
+ */
 trait UserRoleTrait
 {
     /**
@@ -13,7 +15,7 @@ trait UserRoleTrait
     public function roles()
     {
         // Map the User model to the Role model using the roles table and the user_roles table
-        return $this->belongsToMany(Config::get('trust::models.role'), Config::get('trust::tables.user_role'));
+        return $this->belongsToMany(config('trust.models.role'), config('trust.tables.user_role'));
     }
 
 
@@ -36,7 +38,7 @@ trait UserRoleTrait
                 return true;
             }
         }
-     
+
         return false;
     }
 
